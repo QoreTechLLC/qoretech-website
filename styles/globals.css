@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-950: #000b22;
+  --navy-900: #001134;
+  --ember: #DC5326;
+  --sky: #6ec1e4;
+  --text-primary: #d4d4d4;
+  --text-muted: #8a8a8a;
+  --border: rgba(110, 193, 228, 0.1);
+  --border-hover: rgba(110, 193, 228, 0.25);
+  --glass-bg: rgba(0, 17, 52, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: #000b22;
+  color: #d4d4d4;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── Custom scrollbar ───────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000b22; }
+::-webkit-scrollbar-thumb {
+  background: rgba(110, 193, 228, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(110, 193, 228, 0.5);
+}
+
+/* ── Selection ──────────────────────────────────── */
+::selection {
+  background: rgba(220, 83, 38, 0.3);
+  color: #d4d4d4;
+}
+
+/* ── Focus ring ─────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(110, 193, 228, 0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Glass card ─────────────────────────────────── */
+.glass {
+  background: rgba(0, 17, 52, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-dark {
+  background: rgba(0, 11, 34, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── Gradient text ──────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #d4d4d4 0%, #6ec1e4 50%, #d4d4d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-ember {
+  background: linear-gradient(135deg, #DC5326 0%, #f08965 60%, #DC5326 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Noise overlay ──────────────────────────────── */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Animated gradient border ───────────────────── */
+.border-gradient {
+  position: relative;
+}
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(110,193,228,0.3), rgba(220,83,38,0.2), rgba(110,193,228,0.1));
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  padding: 1px;
+}
+
+/* ── Grid lines ─────────────────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(110, 193, 228, 0.04) 1px, transparent 1px),
+    linear-gradient(to right, rgba(110, 193, 228, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── Section separator ──────────────────────────── */
+.section-sep {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(110,193,228,0.15), transparent);
+  margin: 0;
+}
+
+/* ── Utility: no scrollbar ──────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Reduced motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

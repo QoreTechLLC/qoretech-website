@@ -1,0 +1,16 @@
+{
+  "name": "QoreTech",
+  "short_name": "QoreTech",
+  "description": "Premium tech solutions for startups and modern businesses.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000b22",
+  "theme_color": "#001134",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
