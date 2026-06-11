@@ -5,143 +5,116 @@
 @tailwind utilities;
 
 :root {
-  --navy-950: #000b22;
-  --navy-900: #001134;
-  --ember: #DC5326;
-  --sky: #6ec1e4;
-  --text-primary: #d4d4d4;
-  --text-muted: #8a8a8a;
-  --border: rgba(110, 193, 228, 0.1);
-  --border-hover: rgba(110, 193, 228, 0.25);
-  --glass-bg: rgba(0, 17, 52, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.06);
+  --navy-950:   #00060f;
+  --navy-900:   #000d1a;
+  --neon:       #00D97E;
+  --neon-dim:   rgba(0,217,126,0.18);
+  --frost:      #E8EDF5;
+  --text-muted: #506080;
+  --border:     rgba(0,217,126,0.08);
+  --border-hover: rgba(0,217,126,0.22);
+  --glass-bg:   rgba(0,13,26,0.55);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
 }
 
 body {
-  background-color: #000b22;
-  color: #d4d4d4;
+  background-color: #00060f;
+  color: #E8EDF5;
   font-family: 'Inter', system-ui, sans-serif;
   overflow-x: hidden;
 }
 
-/* ── Custom scrollbar ───────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #000b22; }
+/* ── Scrollbar ───────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #00060f; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(110, 193, 228, 0.3);
+  background: rgba(0,217,126,0.25);
   border-radius: 3px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(110, 193, 228, 0.5);
-}
+::-webkit-scrollbar-thumb:hover { background: rgba(0,217,126,0.45); }
 
-/* ── Selection ──────────────────────────────────── */
+/* ── Selection ───────────────────── */
 ::selection {
-  background: rgba(220, 83, 38, 0.3);
-  color: #d4d4d4;
+  background: rgba(0,217,126,0.25);
+  color: #E8EDF5;
 }
 
-/* ── Focus ring ─────────────────────────────────── */
+/* ── Focus ───────────────────────── */
 :focus-visible {
-  outline: 2px solid rgba(110, 193, 228, 0.6);
+  outline: 2px solid rgba(0,217,126,0.55);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* ── Glass card ─────────────────────────────────── */
+/* ── Glass ───────────────────────── */
 .glass {
-  background: rgba(0, 17, 52, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0,13,26,0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.05);
 }
-
 .glass-dark {
-  background: rgba(0, 11, 34, 0.7);
+  background: rgba(0,6,15,0.75);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255,255,255,0.04);
 }
 
-/* ── Gradient text ──────────────────────────────── */
+/* ── Gradient text ───────────────── */
 .text-gradient {
-  background: linear-gradient(135deg, #d4d4d4 0%, #6ec1e4 50%, #d4d4d4 100%);
+  background: linear-gradient(135deg, #E8EDF5 0%, #00D97E 55%, #E8EDF5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-neon {
+  background: linear-gradient(135deg, #00D97E 0%, #4DFFA8 60%, #00D97E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.text-gradient-ember {
-  background: linear-gradient(135deg, #DC5326 0%, #f08965 60%, #DC5326 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ── Grid bg ─────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0,217,126,0.035) 1px, transparent 1px),
+    linear-gradient(to right, rgba(0,217,126,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
 }
 
-/* ── Noise overlay ──────────────────────────────── */
-.noise::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── Animated gradient border ───────────────────── */
-.border-gradient {
+/* ── Neon border gradient ────────── */
+.border-neon {
+  border: 1px solid transparent;
+  background-clip: padding-box;
   position: relative;
 }
-.border-gradient::before {
+.border-neon::before {
   content: '';
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(110,193,228,0.3), rgba(220,83,38,0.2), rgba(110,193,228,0.1));
+  background: linear-gradient(135deg, rgba(0,217,126,0.3), transparent 60%);
   z-index: -1;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  padding: 1px;
 }
 
-/* ── Grid lines ─────────────────────────────────── */
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(110, 193, 228, 0.04) 1px, transparent 1px),
-    linear-gradient(to right, rgba(110, 193, 228, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-
-/* ── Section separator ──────────────────────────── */
+/* ── Section separator ───────────── */
 .section-sep {
   border: none;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(110,193,228,0.15), transparent);
-  margin: 0;
+  background: linear-gradient(to right, transparent, rgba(0,217,126,0.12), transparent);
 }
 
-/* ── Utility: no scrollbar ──────────────────────── */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* ── Reduced motion ─────────────────────────────── */
+/* ── Reduced motion ──────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }

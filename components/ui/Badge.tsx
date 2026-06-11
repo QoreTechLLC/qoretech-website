@@ -2,16 +2,16 @@ import { cn } from '@/lib/utils'
 
 interface BadgeProps {
   children: React.ReactNode
-  variant?: 'sky' | 'ember' | 'neutral' | 'success'
+  variant?: 'neon' | 'frost' | 'neutral' | 'success'
   className?: string
 }
 
-export default function Badge({ children, variant = 'sky', className }: BadgeProps) {
+export default function Badge({ children, variant = 'neon', className }: BadgeProps) {
   const variants = {
-    sky: 'bg-sky-electric/10 text-sky-electric border-sky-electric/20',
-    ember: 'bg-ember-500/10 text-ember-400 border-ember-500/20',
-    neutral: 'bg-white/5 text-neutral-200 border-white/10',
-    success: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    neon:    'bg-neon-500/10 text-neon-500 border-neon-500/20',
+    frost:   'bg-frost-100/8 text-frost-200 border-frost-200/15',
+    neutral: 'bg-white/5 text-frost-300 border-white/10',
+    success: 'bg-neon-500/10 text-neon-400 border-neon-500/20',
   }
 
   return (
