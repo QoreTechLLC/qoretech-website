@@ -15,7 +15,7 @@ export default function Home() {
     <main className="relative">
       <Navbar />
       <Hero />
-      <LogoMarquee />
+      {/* <LogoMarquee /> */}
       <Services />
       <WhyQoreTech />
       <Process />

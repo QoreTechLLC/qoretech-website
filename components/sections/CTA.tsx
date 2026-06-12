@@ -110,7 +110,7 @@ export default function CTA() {
                         id="name"
                         type="text"
                         required
-                        placeholder="Alex Johnson"
+                        placeholder="Jalen Brunson"
                         value={form.name}
                         onChange={(e) =>
                           setForm({ ...form, name: e.target.value })
@@ -129,7 +129,7 @@ export default function CTA() {
                         id="email"
                         type="email"
                         required
-                        placeholder="alex@startup.com"
+                        placeholder="jalen@startup.com"
                         value={form.email}
                         onChange={(e) =>
                           setForm({ ...form, email: e.target.value })
