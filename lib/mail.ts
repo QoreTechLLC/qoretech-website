@@ -12,7 +12,7 @@ export async function sendContactEmail({
   return resend.emails.send({
     from: "QoreTech <admin@qoretech.dev>",
     to: "admin@qoretech.dev",
-    subject: `New message from ${name}`,
+    subject: `Important! ${name} wants to contact us!`,
     html: `<p><b>Name:</b> ${name}</p>
            <p><b>Email:</b> ${email}</p>
            <p><b>Message:</b> ${message}</p>`,
