@@ -51,8 +51,8 @@ export default function P5Background() {
 
         // ── Sketch setup & draw ───────────────────────
         let particles: Particle[] = [];
-        const PARTICLE_COUNT = 80;
-        const CONNECTION_DIST = 140; // max distance to draw a line
+        const PARTICLE_COUNT = 40;
+        const CONNECTION_DIST = 200; // max distance to draw a line
 
         p.setup = () => {
           const canvas = p.createCanvas(
