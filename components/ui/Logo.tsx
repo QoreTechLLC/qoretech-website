@@ -18,7 +18,6 @@ export default function Logo({
     lg: { mark: 40, text: "text-2xl" },
   };
   const s = sizes[size];
-  console.log(logo);
 
   return (
     <div className={cn("inline-flex items-center gap-2.5 shrink-0", className)}>

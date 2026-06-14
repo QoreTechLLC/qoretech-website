@@ -6,21 +6,109 @@ import { ArrowUpRight, Mail, MessageSquare, CheckCircle2 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import GlowOrb from "@/components/ui/GlowOrb";
 
+// ── Types ─────────────────────────────────────────
+type FormFields = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+type FormErrors = Partial<Record<keyof FormFields, string>>;
+
+// ── Validation rules ──────────────────────────────
+function validate(form: FormFields): FormErrors {
+  const errors: FormErrors = {};
+
+  if (!form.name.trim()) {
+    errors.name = "Name is required.";
+  } else if (form.name.trim().length < 2) {
+    errors.name = "Name must be at least 2 characters.";
+  }
+
+  if (!form.email.trim()) {
+    errors.email = "Email is required.";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    errors.email = "Please enter a valid email address.";
+  }
+
+  if (!form.message.trim()) {
+    errors.message = "Message is required.";
+  } else if (form.message.trim().length < 20) {
+    errors.message = "Message must be at least 20 characters.";
+  }
+
+  return errors;
+}
+
+// ── Component ─────────────────────────────────────
 export default function CTA() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
   const [state, setState] = useState<"idle" | "loading" | "success">("idle");
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState<FormFields>({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof FormFields, boolean>>
+  >({});
+
+  // Validate a single field when user leaves it (on blur)
+  const handleBlur = (field: keyof FormFields) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const fieldErrors = validate(form);
+    setErrors((prev) => ({ ...prev, [field]: fieldErrors[field] }));
+  };
+
+  // Update field value and clear its error if it becomes valid
+  const handleChange = (field: keyof FormFields, value: string) => {
+    const updated = { ...form, [field]: value };
+    setForm(updated);
+
+    // Only re-validate live if the field has already been touched
+    if (touched[field]) {
+      const fieldErrors = validate(updated);
+      setErrors((prev) => ({ ...prev, [field]: fieldErrors[field] }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Mark all fields as touched so errors show everywhere
+    setTouched({ name: true, email: true, message: true });
+
+    const fieldErrors = validate(form);
+    setErrors(fieldErrors);
+
+    // Stop if there are any errors
+    if (Object.keys(fieldErrors).length > 0) return;
+
     setState("loading");
-    await new Promise((r) => setTimeout(r, 1400));
+
+    await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
     setState("success");
   };
 
-  const inputClass =
-    "w-full bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 text-sm text-frost-100 placeholder:text-frost-600 focus:outline-none focus:border-neon-500/35 focus:bg-white/[0.05] transition-all duration-200";
+  // Builds the className for each input depending on its state
+  const inputClass = (field: keyof FormFields) => {
+    const hasError = touched[field] && errors[field];
+    return [
+      "w-full bg-white/[0.03] border rounded-xl px-4 py-3 text-sm text-frost-100",
+      "placeholder:text-frost-600 outline-none transition-all duration-200",
+      hasError
+        ? "border-red-500/60 bg-red-500/5 focus:border-red-500"
+        : "border-white/[0.07] focus:border-neon-500/35 focus:bg-white/[0.05]",
+    ].join(" ");
+  };
 
   return (
     <section
@@ -36,6 +124,7 @@ export default function CTA() {
 
       <div ref={ref} className="relative max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left: copy — unchanged */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -77,6 +166,7 @@ export default function CTA() {
             </div>
           </motion.div>
 
+          {/* Right: form */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -93,12 +183,14 @@ export default function CTA() {
                   </h3>
                   <p className="text-sm text-frost-500 max-w-xs">
                     We&apos;ll review your project and get back to you within 24
-                    hours. Check your inbox.
+                    hours.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  {/* Name + Email row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Name */}
                     <div>
                       <label
                         htmlFor="name"
@@ -109,15 +201,27 @@ export default function CTA() {
                       <input
                         id="name"
                         type="text"
-                        required
                         placeholder="Jalen Brunson"
                         value={form.name}
-                        onChange={(e) =>
-                          setForm({ ...form, name: e.target.value })
+                        onChange={(e) => handleChange("name", e.target.value)}
+                        onBlur={() => handleBlur("name")}
+                        className={inputClass("name")}
+                        aria-invalid={!!errors.name}
+                        aria-describedby={
+                          errors.name ? "name-error" : undefined
                         }
-                        className={inputClass}
                       />
+                      {touched.name && errors.name && (
+                        <p
+                          id="name-error"
+                          className="mt-1.5 text-xs text-red-400 flex items-center gap-1"
+                        >
+                          <span>⚠</span> {errors.name}
+                        </p>
+                      )}
                     </div>
+
+                    {/* Email */}
                     <div>
                       <label
                         htmlFor="email"
@@ -128,35 +232,68 @@ export default function CTA() {
                       <input
                         id="email"
                         type="email"
-                        required
-                        placeholder="jalen@startup.com"
+                        placeholder="jbrunson@startup.com"
                         value={form.email}
-                        onChange={(e) =>
-                          setForm({ ...form, email: e.target.value })
+                        onChange={(e) => handleChange("email", e.target.value)}
+                        onBlur={() => handleBlur("email")}
+                        className={inputClass("email")}
+                        aria-invalid={!!errors.email}
+                        aria-describedby={
+                          errors.email ? "email-error" : undefined
                         }
-                        className={inputClass}
                       />
+                      {touched.email && errors.email && (
+                        <p
+                          id="email-error"
+                          className="mt-1.5 text-xs text-red-400 flex items-center gap-1"
+                        >
+                          <span>⚠</span> {errors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
+
+                  {/* Message */}
                   <div>
                     <label
-                      htmlFor="msg"
+                      htmlFor="message"
                       className="block text-xs font-medium text-frost-500 mb-2"
                     >
                       Tell us about your project
                     </label>
                     <textarea
-                      id="msg"
-                      required
+                      id="message"
                       rows={5}
                       placeholder="We're building a SaaS for..."
                       value={form.message}
-                      onChange={(e) =>
-                        setForm({ ...form, message: e.target.value })
+                      onChange={(e) => handleChange("message", e.target.value)}
+                      onBlur={() => handleBlur("message")}
+                      className={`${inputClass("message")} resize-none`}
+                      aria-invalid={!!errors.message}
+                      aria-describedby={
+                        errors.message ? "message-error" : undefined
                       }
-                      className={`${inputClass} resize-none`}
                     />
+                    {/* Character counter + error */}
+                    <div className="flex items-center justify-between mt-1.5">
+                      {touched.message && errors.message ? (
+                        <p
+                          id="message-error"
+                          className="text-xs text-red-400 flex items-center gap-1"
+                        >
+                          <span>⚠</span> {errors.message}
+                        </p>
+                      ) : (
+                        <span /> // empty spacer to keep counter right-aligned
+                      )}
+                      <span
+                        className={`text-xs tabular-nums ${form.message.length < 20 ? "text-frost-600" : "text-neon-500"}`}
+                      >
+                        {form.message.length} / 20 min
+                      </span>
+                    </div>
                   </div>
+
                   <Button
                     type="submit"
                     variant="primary"
@@ -167,6 +304,7 @@ export default function CTA() {
                     Send message
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Button>
+
                   <p className="text-center text-xs text-frost-700">
                     No spam. No pressure. Just a real conversation.
                   </p>
