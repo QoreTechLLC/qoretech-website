@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"components/ui/P5background.tsx -> p5\":{\"id\":\"components/ui/P5background.tsx -> p5\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_p5_dist_app_js.js\"]}}"

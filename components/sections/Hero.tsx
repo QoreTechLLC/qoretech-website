@@ -5,6 +5,7 @@ import { ArrowUpRight, Zap, Shield, Layers } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import GlowOrb from "@/components/ui/GlowOrb";
+import P5Background from "@/components/ui/P5background";
 
 const floatingCards = [
   {
@@ -48,6 +49,8 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 pb-24 grid-bg"
       aria-label="Hero"
     >
+      {/* p5 canvas — sits behind everything */}
+      <P5Background />
       {/* Glow orbs */}
       <GlowOrb
         color="neon"
